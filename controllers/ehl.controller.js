@@ -26,7 +26,6 @@ module.exports.read_alumno = (request,response) => {
 
 
 module.exports.create_alumno = (request,response) => {
-    //response.send('Car save')
     let car = request.body
     let sql = 'INSERT INTO Alumno SET ?'
     conexion.query(sql, [car], (error,results,fields) =>{
@@ -35,8 +34,6 @@ module.exports.create_alumno = (request,response) => {
         }
         response.json(results)
     })
-
-
 }
 
 
