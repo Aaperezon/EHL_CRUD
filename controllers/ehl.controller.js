@@ -2,6 +2,40 @@ let mysql = require('mysql')
 let config = require('../helpers/config')
 let conexion = mysql.createConnection(config)
 
+module.exports.inicio_sesion = (request,response) => {
+    let sql = 'SELECT Alumno.perfil, Alumno.idAlumno FROM Alumno WHERE Alumno.usuario = ? and Alumno.contraseña =?'
+    conexion.query(sql, [request.params.user, request.params.pass], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        else if(results == ''){
+            let sql = 'SELECT Maestro.perfil, Maestro.idMaestro FROM Maestro WHERE Maestro.usuario =? and Maestro.contraseña = ?'
+            conexion.query(sql, [request.params.user, request.params.pass], (error, results, fields) =>{
+                if(error){
+                    response.send(error)
+                }
+                else if(results == ''){
+                    let sql = 'SELECT ControlParental.perfil, ControlParental.idControlParental FROM ControlParental WHERE ControlParental.usuario = ? and ControlParental.contraseña = ?'
+                    conexion.query(sql, [request.params.user, request.params.pass], (error, results, fields) =>{
+                        if(error){
+                            response.send(error)
+                        }else{
+                            response.json(results)
+                        }
+                    })
+                }else{
+                    response.json(results)
+                }
+            })
+        }
+        else{
+            response.json(results)
+        }
+    })
+    
+} 
+
+
 module.exports.read_alumnos = (request,response) => {
     //response.send('Car list')
     let sql = 'SELECT * FROM Alumno'

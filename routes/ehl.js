@@ -3,6 +3,9 @@ let router = express.Router()
 
 let ehlController = require('../controllers/ehl.controller')
 
+router.get('/inicioSesion/:user/:pass', ehlController.inicio_sesion)
+
+
 router.get('/read_alumnos', ehlController.read_alumnos)
 router.get('/read_alumno/:id', ehlController.read_alumno)
 router.post('/create_alumno', ehlController.create_alumno)
