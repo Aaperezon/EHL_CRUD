@@ -55,8 +55,8 @@ FOREIGN KEY (idActividad) REFERENCES Actividad(idActividad) ON DELETE CASCADE ON
 CREATE TABLE CQuiz(
 	idCQuiz INT AUTO_INCREMENT PRIMARY KEY,
 	pregunta VARCHAR(128) NOT NULL,
-	respuestaCorrecta BOOL NOT NULL,
-	respuesta BOOL NOT NULL
+	respuestaCorrecta VARCHAR(128) NOT NULL,
+	respuesta VARCHAR(128) NOT NULL
 );
 CREATE TABLE ActividadCQuiz( 
 idCQuiz INT NOT NULL, 
@@ -66,16 +66,15 @@ FOREIGN KEY (idCQuiz) REFERENCES CQuiz(idCQuiz) ON DELETE CASCADE ON UPDATE CASC
 FOREIGN KEY (idActividad) REFERENCES Actividad(idActividad) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE Memorama(
-	idMemorama INT AUTO_INCREMENT PRIMARY KEY,
-	figura1 LONGBLOB NOT NULL,
-	figura2 LONGBLOB NOT NULL
+CREATE TABLE FlashCard(
+	idFlashCard INT AUTO_INCREMENT PRIMARY KEY,
+	url LONGBLOB NOT NULL
 );
-CREATE TABLE ActividadMemorama( 
-idMemorama INT NOT NULL, 
+CREATE TABLE ActividadFlashCard( 
+idFlashCard INT NOT NULL, 
 idActividad INT NOT NULL, 
-PRIMARY KEY(idMemorama, idActividad), 
-FOREIGN KEY (idMemorama) REFERENCES Memorama(idMemorama) ON DELETE CASCADE ON UPDATE CASCADE,
+PRIMARY KEY(idFlashCard, idActividad), 
+FOREIGN KEY (idFlashCard) REFERENCES FlashCard(idFlashCard) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (idActividad) REFERENCES Actividad(idActividad) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE TABLE ControlParental(
@@ -117,5 +116,5 @@ idAlumno INT NOT NULL,
 calificacion FLOAT NOT NULL, 
 PRIMARY KEY( idActividad,idAlumno), 
 foreign key (idActividad) references Actividad(idActividad) ON DELETE CASCADE ON UPDATE CASCADE,
-foreign key (idAlumno) references Alumno(idAlumno) ON DELETE CASCADE ON UPDATE CASCADE
+foreign key (idAlumno) references GrupoAlumno(idAlumno) ON DELETE CASCADE ON UPDATE CASCADE
 );

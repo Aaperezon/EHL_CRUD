@@ -6,6 +6,18 @@ let ehlController = require('../controllers/ehl.controller')
 router.get('/inicioSesion/:user/:pass', ehlController.inicio_sesion)
 
 
+router.get('/controlParentalCalificaciones/:usr/:pass', ehlController.controlParentalCalificaciones)
+router.get('/controlParentalAsistencias/:usr/:pass', ehlController.controlParentalAsistencias)
+router.get('/controlParentalNivelConocimiento/:usr/:pass', ehlController.controlParentalNivelConocimiento)
+
+
+router.get('/alumnoActividades/:usr/:pass', ehlController.alumnoActividades)
+router.get('/alumnoGrupos/:usr/:pass', ehlController.alumnoGrupos)
+router.get('/alumnoAjustes/:usr/:pass', ehlController.alumnoAjustes)
+
+
+
+
 router.get('/read_alumnos', ehlController.read_alumnos)
 router.get('/read_alumno/:id', ehlController.read_alumno)
 router.post('/create_alumno', ehlController.create_alumno)

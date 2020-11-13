@@ -36,6 +36,68 @@ module.exports.inicio_sesion = (request,response) => {
 } 
 
 
+
+module.exports.controlParentalCalificaciones = (request,response) => {
+    let sql = 'Call ControlParentalCalificaciones(?,?)'
+    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+} 
+module.exports.controlParentalAsistencias = (request,response) => {
+    let sql = 'Call ControlParentalAsistencias(?,?)'
+    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+} 
+module.exports.controlParentalNivelConocimiento = (request,response) => {
+    let sql = 'Call ControlParentalNivelConocimiento(?,?)'
+    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+} 
+
+
+module.exports.alumnoActividades = (request,response) => {
+    let sql = 'Call AlumnoActividades(?,?)'
+    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+} 
+
+module.exports.alumnoGrupos = (request,response) => {
+    let sql = 'Call AlumnoGrupos(?,?)'
+    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+} 
+
+module.exports.alumnoAjustes = (request,response) => {
+    let sql = 'Call AlumnoAjustes(?,?)'
+    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results)
+    })
+} 
+
+
+
 module.exports.read_alumnos = (request,response) => {
     //response.send('Car list')
     let sql = 'SELECT * FROM Alumno'

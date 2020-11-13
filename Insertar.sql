@@ -1,37 +1,42 @@
 INSERT INTO Alumno (nombreCompleto , usuario, contraseña) VALUES 
-('alumno1','a','a'),
-('alumno2','s','g'),
-('alumno3','h','g'),
-('alumno4','q','a');
+('Emmanuel del Río Sarmiento','Emma','e'),
+('Aaron Perez Ontiveros','Aaron','Apo'),
+('Andrea Espinosa Azuela','Andy','Aea'),
+('Ricardo Adolfo Solís Zugarazo','Ricky','Rasz');
+
 INSERT INTO Maestro (nombreCompleto , usuario, contraseña) VALUES 
-('Aaron','m','m'),
-('Andrea','m','m'),
-('Emmanuel','m','m'),
-('Ricardo','m','m');
+('Hugo Omar Alejandres Sánchez','Hugo','Hoas'),
+('Nimrod Gonzalez','Nimrod','Ng'),
+('Gwendolyne Delgado García','Gwen','Gdg');
+
 INSERT INTO Actividad (nombreActividad) VALUES 
-('Actividad1'),
-('Actividad2'),
-('Actividad3'),
-('Actividad4');
+('Actividad C++'),
+('Actividad C#'),
+('Actividad java'),
+('Actividad4 SQL');
 
 INSERT INTO ControlParental (usuario, contraseña) VALUES 
-('c','c'),
-('w','j'),
-('ñ','l'),
-('o','r');
+('e','e'),
+('CP-Aaron','cpapo'),
+('CP-Andy','cpaca'),
+('CP-Ricky','cpricky');
+
 INSERT INTO AlumnoControlParental (idAlumno, idControlParental) VALUES 
 (1,1),
 (2,2),
 (3,3),
 (4,4);
+
 INSERT INTO Grupo (nombreGrupo) VALUES 
-('Grupo1'),
-('Grupo2'),
-('Grupo3'),
-('Grupo4');
+('Clase lenguajeS C/C++/C#'),
+('Clase Java'),
+('Clase SQL');
+
 INSERT INTO GrupoActividad (idActividad, idGrupo) VALUES 
 (1,1),
-(2,2);
+(2,1),
+(3,2),
+(4,3);
 
 INSERT INTO GrupoAlumno (idAlumno,idGrupo,faltas) VALUES 
 (1,2,0),
@@ -39,15 +44,17 @@ INSERT INTO GrupoAlumno (idAlumno,idGrupo,faltas) VALUES
 (2,2,0),
 (3,2,4),
 (4,2,2);
+
 INSERT INTO Calificacion (idActividad,idAlumno,calificacion) VALUES 
-(1,1,1),
-(1,2,7),
-(1,3,8),
+(1,1,10),
+(1,2,10),
+(1,3,10),
 (1,4,8),
 (2,1,9),
 (2,2,9),
 (2,3,9),
-(2,4,9);
+(2,4,9),
+(3,1,9);
 
 INSERT INTO GrupoMaestro (idMaestro,idGrupo) VALUES 
 (1,4),
