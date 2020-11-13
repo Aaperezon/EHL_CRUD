@@ -13,7 +13,13 @@ router.get('/controlParentalNivelConocimiento/:usr/:pass', ehlController.control
 
 router.get('/alumnoActividades/:usr/:pass', ehlController.alumnoActividades)
 router.get('/alumnoGrupos/:usr/:pass', ehlController.alumnoGrupos)
-router.get('/alumnoAjustes/:usr/:pass', ehlController.alumnoAjustes)
+router.get('/alumnoAjustes/:usr/:pass/:confirm', ehlController.alumnoAjustes)
+
+
+
+
+
+router.get('/maestroAjustes/:usr/:pass/:confirm', ehlController.maestroAjustes)
 
 
 

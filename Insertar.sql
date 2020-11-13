@@ -1,5 +1,5 @@
 INSERT INTO Alumno (nombreCompleto , usuario, contraseña) VALUES 
-('Emmanuel del Río Sarmiento','Emma','e'),
+('Emmanuel del Río Sarmiento','q','q'),
 ('Aaron Perez Ontiveros','Aaron','Apo'),
 ('Andrea Espinosa Azuela','Andy','Aea'),
 ('Ricardo Adolfo Solís Zugarazo','Ricky','Rasz');
@@ -7,7 +7,8 @@ INSERT INTO Alumno (nombreCompleto , usuario, contraseña) VALUES
 INSERT INTO Maestro (nombreCompleto , usuario, contraseña) VALUES 
 ('Hugo Omar Alejandres Sánchez','Hugo','Hoas'),
 ('Nimrod Gonzalez','Nimrod','Ng'),
-('Gwendolyne Delgado García','Gwen','Gdg');
+('Gwendolyne Delgado García','Gwen','Gdg'),
+('Pedro Najera','Pedro','Pedro');
 
 INSERT INTO Actividad (nombreActividad) VALUES 
 ('Actividad C++'),
@@ -30,7 +31,8 @@ INSERT INTO AlumnoControlParental (idAlumno, idControlParental) VALUES
 INSERT INTO Grupo (nombreGrupo) VALUES 
 ('Clase lenguajeS C/C++/C#'),
 ('Clase Java'),
-('Clase SQL');
+('Clase SQL'),
+('Clase Deportes');
 
 INSERT INTO GrupoActividad (idActividad, idGrupo) VALUES 
 (1,1),
@@ -46,7 +48,7 @@ INSERT INTO GrupoAlumno (idAlumno,idGrupo,faltas) VALUES
 (4,2,2);
 
 INSERT INTO Calificacion (idActividad,idAlumno,calificacion) VALUES 
-(1,1,10),
+(1,1,0),
 (1,2,10),
 (1,3,10),
 (1,4,8),

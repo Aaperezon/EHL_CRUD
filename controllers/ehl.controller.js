@@ -87,8 +87,20 @@ module.exports.alumnoGrupos = (request,response) => {
 } 
 
 module.exports.alumnoAjustes = (request,response) => {
-    let sql = 'Call AlumnoAjustes(?,?)'
-    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+    let sql = 'Call AlumnoAjustes(?,?,?)'
+    conexion.query(sql, [request.params.usr, request.params.pass, request.params.confirm], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results)
+    })
+} 
+
+
+
+module.exports.maestroAjustes = (request,response) => {
+    let sql = 'Call MaestroAjustes(?,?,?)'
+    conexion.query(sql, [request.params.usr, request.params.pass, request.params.confirm], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
