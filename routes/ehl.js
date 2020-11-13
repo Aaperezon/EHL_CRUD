@@ -6,20 +6,20 @@ let ehlController = require('../controllers/ehl.controller')
 router.get('/inicioSesion/:user/:pass', ehlController.inicio_sesion)
 
 
-router.get('/controlParentalCalificaciones/:usr/:pass', ehlController.controlParentalCalificaciones)
-router.get('/controlParentalAsistencias/:usr/:pass', ehlController.controlParentalAsistencias)
-router.get('/controlParentalNivelConocimiento/:usr/:pass', ehlController.controlParentalNivelConocimiento)
+router.get('/controlParentalCalificaciones/:id', ehlController.controlParentalCalificaciones)
+router.get('/controlParentalAsistencias/:id', ehlController.controlParentalAsistencias)
+router.get('/controlParentalNivelConocimiento/:id', ehlController.controlParentalNivelConocimiento)
 
 
-router.get('/alumnoActividades/:usr/:pass', ehlController.alumnoActividades)
-router.get('/alumnoGrupos/:usr/:pass', ehlController.alumnoGrupos)
-router.get('/alumnoAjustes/:usr/:pass/:confirm', ehlController.alumnoAjustes)
+router.get('/alumnoActividades/:id', ehlController.alumnoActividades)
+router.get('/alumnoGrupos/:id', ehlController.alumnoGrupos)
+router.get('/alumnoAjustes/:id/:confirm', ehlController.alumnoAjustes)
 
 
 
 
 
-router.get('/maestroAjustes/:usr/:pass/:confirm', ehlController.maestroAjustes)
+router.get('/maestroAjustes/:id/:confirm', ehlController.maestroAjustes)
 
 
 

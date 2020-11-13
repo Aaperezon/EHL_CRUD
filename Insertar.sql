@@ -1,11 +1,11 @@
 INSERT INTO Alumno (nombreCompleto , usuario, contraseña) VALUES 
-('Emmanuel del Río Sarmiento','q','q'),
+('Emmanuel del Río Sarmiento','a','a'),
 ('Aaron Perez Ontiveros','Aaron','Apo'),
 ('Andrea Espinosa Azuela','Andy','Aea'),
 ('Ricardo Adolfo Solís Zugarazo','Ricky','Rasz');
 
 INSERT INTO Maestro (nombreCompleto , usuario, contraseña) VALUES 
-('Hugo Omar Alejandres Sánchez','Hugo','Hoas'),
+('Hugo Omar Alejandres Sánchez','h','h'),
 ('Nimrod Gonzalez','Nimrod','Ng'),
 ('Gwendolyne Delgado García','Gwen','Gdg'),
 ('Pedro Najera','Pedro','Pedro');
@@ -17,7 +17,7 @@ INSERT INTO Actividad (nombreActividad) VALUES
 ('Actividad4 SQL');
 
 INSERT INTO ControlParental (usuario, contraseña) VALUES 
-('e','e'),
+('c','c'),
 ('CP-Aaron','cpapo'),
 ('CP-Andy','cpaca'),
 ('CP-Ricky','cpricky');

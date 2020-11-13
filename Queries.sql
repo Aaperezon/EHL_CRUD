@@ -7,32 +7,32 @@ use ehl;
 
 drop procedure if exists ControlParentalCalificaciones;
 DELIMITER //
-CREATE PROCEDURE ControlParentalCalificaciones(IN usr VARCHAR(16), IN pass VARCHAR(16))
+CREATE PROCEDURE ControlParentalCalificaciones(IN usr INT)
 BEGIN
 	DROP TEMPORARY TABLE  IF EXISTS Resultado1;
 	CREATE TEMPORARY TABLE Resultado1 AS
 		SELECT Alumno.nombreCompleto, Grupo.nombreGrupo, Actividad.nombreActividad, Calificacion.calificacion
 		FROM (((((((ControlParental
-			INNER JOIN AlumnoControlParental ON ControlParental.idControlParental = AlumnoControlParental.idControlParental)
-			INNER JOIN Alumno ON AlumnoControlParental.idAlumno = Alumno.idAlumno)
-			INNER JOIN GrupoAlumno ON GrupoAlumno.idAlumno = Alumno.idAlumno)
-			INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.idGrupo)
-			INNER JOIN GrupoActividad ON Grupo.idGrupo = GrupoActividad.idGrupo)
-			INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.idActividad)
-			INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.idActividad = Calificacion.idActividad)
-		WHERE  ControlParental.idControlParental and ControlParental.usuario = usr and ControlParental.contraseña = pass;
+			INNER JOIN AlumnoControlParental ON ControlParental.id = AlumnoControlParental.idControlParental)
+			INNER JOIN Alumno ON AlumnoControlParental.idAlumno = Alumno.id)
+			INNER JOIN GrupoAlumno ON GrupoAlumno.idAlumno = Alumno.id)
+			INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
+			INNER JOIN GrupoActividad ON Grupo.id = GrupoActividad.idGrupo)
+			INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.id)
+			INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.id = Calificacion.idActividad)
+		WHERE ControlParental.id = usr;
 	DROP TEMPORARY TABLE  IF EXISTS Resultado2;
     CREATE TEMPORARY TABLE Resultado2 AS
 		SELECT Grupo.nombreGrupo, AVG(Calificacion.calificacion) as promedio
 		FROM (((((((ControlParental
-			INNER JOIN AlumnoControlParental ON ControlParental.idControlParental = AlumnoControlParental.idControlParental)
-			INNER JOIN Alumno ON AlumnoControlParental.idAlumno = Alumno.idAlumno)
-			INNER JOIN GrupoAlumno ON GrupoAlumno.idAlumno = Alumno.idAlumno)
-			INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.idGrupo)
-			INNER JOIN GrupoActividad ON Grupo.idGrupo = GrupoActividad.idGrupo)
-			INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.idActividad)
-			INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.idActividad = Calificacion.idActividad)
-		WHERE  ControlParental.idControlParental and ControlParental.usuario = usr and ControlParental.contraseña = pass
+			INNER JOIN AlumnoControlParental ON ControlParental.id = AlumnoControlParental.idControlParental)
+			INNER JOIN Alumno ON AlumnoControlParental.idAlumno = Alumno.id)
+			INNER JOIN GrupoAlumno ON GrupoAlumno.idAlumno = Alumno.id)
+			INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
+			INNER JOIN GrupoActividad ON Grupo.id = GrupoActividad.idGrupo)
+			INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.id)
+			INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.id = Calificacion.idActividad)
+		WHERE  ControlParental.id = usr
 		GROUP BY Grupo.nombreGrupo; 
         
 	SELECT Resultado1.nombreCompleto,Resultado1.nombreGrupo,  Resultado2.promedio , Resultado1.nombreActividad, Resultado1.calificacion
@@ -42,7 +42,7 @@ BEGIN
         
 END //
 DELIMITER ;
-#CALL ControlParentalCalificaciones( 'e', 'e' );
+#CALL ControlParentalCalificaciones( 1 );
 
 
 /*Control Parental : Asistencias
@@ -51,20 +51,20 @@ DELIMITER ;
 
 drop procedure if exists ControlParentalAsistencias;
 DELIMITER //
-CREATE PROCEDURE ControlParentalAsistencias(IN usr VARCHAR(16), IN pass VARCHAR(16))
+CREATE PROCEDURE ControlParentalAsistencias(IN usr INT)
 BEGIN
 	SELECT Alumno.nombreCompleto, Grupo.nombreGrupo, GrupoAlumno.faltas
 	FROM ((((ControlParental
-		INNER JOIN AlumnoControlParental ON ControlParental.idControlParental = AlumnoControlParental.idControlParental)
-		INNER JOIN Alumno ON AlumnoControlParental.idAlumno = Alumno.idAlumno)
-		INNER JOIN GrupoAlumno ON GrupoAlumno.idAlumno = Alumno.idAlumno)
-		INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.idGrupo)
+		INNER JOIN AlumnoControlParental ON ControlParental.id = AlumnoControlParental.idControlParental)
+		INNER JOIN Alumno ON AlumnoControlParental.idAlumno = Alumno.id)
+		INNER JOIN GrupoAlumno ON GrupoAlumno.idAlumno = Alumno.id)
+		INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
 		
-	WHERE  ControlParental.idControlParental and ControlParental.usuario = usr and ControlParental.contraseña = pass;
+	WHERE  ControlParental.id  = usr;
 
 END //
 DELIMITER ;
-#CALL ControlParentalAsistencias( 'c', 'c' );
+#CALL ControlParentalAsistencias( 1 );
 
 
 /*Control Parental : Nivel de conocimiento
@@ -72,22 +72,44 @@ DELIMITER ;
 */
 drop procedure if exists ControlParentalNivelConocimiento;
 DELIMITER //
-CREATE PROCEDURE ControlParentalNivelConocimiento(IN usr VARCHAR(16), IN pass VARCHAR(16))
+CREATE PROCEDURE ControlParentalNivelConocimiento(IN usr INT)
 BEGIN
 	SELECT Alumno.nombreCompleto, ROUND(AVG(Calificacion.calificacion),1) as nivelConocimiento
 	FROM (((((((ControlParental
-		INNER JOIN AlumnoControlParental ON ControlParental.idControlParental = AlumnoControlParental.idControlParental)
-		INNER JOIN Alumno ON AlumnoControlParental.idAlumno = Alumno.idAlumno)
-		INNER JOIN GrupoAlumno ON GrupoAlumno.idAlumno = Alumno.idAlumno)
-		INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.idGrupo)
-		INNER JOIN GrupoActividad ON Grupo.idGrupo = GrupoActividad.idGrupo)
-		INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.idActividad)
-        INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.idActividad = Calificacion.idActividad)
-	WHERE  ControlParental.idControlParental and ControlParental.usuario = usr and ControlParental.contraseña = pass
+		INNER JOIN AlumnoControlParental ON ControlParental.id = AlumnoControlParental.idControlParental)
+		INNER JOIN Alumno ON AlumnoControlParental.idAlumno = Alumno.id)
+		INNER JOIN GrupoAlumno ON GrupoAlumno.idAlumno = Alumno.id)
+		INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
+		INNER JOIN GrupoActividad ON Grupo.id = GrupoActividad.idGrupo)
+		INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.id)
+        INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.id = Calificacion.idActividad)
+	WHERE  ControlParental.id  = usr
     GROUP BY Alumno.nombreCompleto;
 END //
 DELIMITER ;
-#CALL ControlParentalNivelConocimiento( 'e', 'e' );
+#CALL ControlParentalNivelConocimiento( 1 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*Alumno : Actividades
 	nombre de todos los grupos, actividades de cada grupo, calificacion de cada actividad.
@@ -95,73 +117,162 @@ DELIMITER ;
 
 drop procedure if exists AlumnoActividades;
 DELIMITER //
-CREATE PROCEDURE AlumnoActividades(IN usr VARCHAR(16), IN pass VARCHAR(16))
+CREATE PROCEDURE AlumnoActividades(IN usr INT)
 BEGIN
 	SELECT Alumno.nombreCompleto, Actividad.nombreActividad, Calificacion.calificacion
 	FROM (((((Alumno
-        INNER JOIN GrupoAlumno ON Alumno.idAlumno = GrupoAlumno.idAlumno)
-        INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.idGrupo)
-        INNER JOIN GrupoActividad ON Grupo.idGrupo = GrupoActividad.idGrupo)
-        INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.idActividad)
-        INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.idActividad = Calificacion.idActividad)
-        
-        
-	WHERE  Alumno.usuario = usr and Alumno.contraseña = pass;
+        INNER JOIN GrupoAlumno ON Alumno.id = GrupoAlumno.idAlumno)
+        INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
+        INNER JOIN GrupoActividad ON Grupo.id = GrupoActividad.idGrupo)
+        INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.id)
+        INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.id = Calificacion.idActividad)        
+	WHERE  Alumno.id = usr;
+    
 END //
 DELIMITER ;
-#CALL AlumnoActividades( 'q', 'q' );
+#CALL AlumnoActividades( 1 );
 
 /*Alumno : Grupos
 	nombre del grupo, nombre del maestro que da ese grupo.
 */
-
 drop procedure if exists AlumnoGrupos;
 DELIMITER //
-CREATE PROCEDURE AlumnoGrupos(IN usr VARCHAR(16), IN pass VARCHAR(16))
+CREATE PROCEDURE AlumnoGrupos(IN usr INT)
 BEGIN
 	SELECT Grupo.nombreGrupo, Maestro.nombreCompleto
 	FROM ((((Alumno
-        INNER JOIN GrupoAlumno ON Alumno.idAlumno = GrupoAlumno.idAlumno)
-        INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.idGrupo)
-        INNER JOIN GrupoMaestro ON Grupo.idGrupo = GrupoMaestro.idGrupo)
-        INNER JOIN Maestro ON GrupoMaestro.idMaestro = Maestro.idMaestro)
+        INNER JOIN GrupoAlumno ON Alumno.id = GrupoAlumno.idAlumno)
+        INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
+        INNER JOIN GrupoMaestro ON Grupo.id = GrupoMaestro.idGrupo)
+        INNER JOIN Maestro ON GrupoMaestro.idMaestro = Maestro.id)
 
-	WHERE  Alumno.usuario = usr and Alumno.contraseña = pass;
+	WHERE  Alumno.id = usr;
 END //
 DELIMITER ;
-#CALL AlumnoGrupos( 'q', 'q' );
+#CALL AlumnoGrupos( 1 );
 
 /*Alumno : Ajustes
 	comprobar contraseña actual y 
 	cambiar contraseña
 */
-
 drop procedure if exists AlumnoAjustes;
 DELIMITER //
-CREATE PROCEDURE AlumnoAjustes(IN usr VARCHAR(16), IN pass VARCHAR(16),IN newPass VARCHAR(16))
+CREATE PROCEDURE AlumnoAjustes(IN usr INT, IN newPass VARCHAR(16))
 BEGIN
-	DECLARE id INT;
-    SET id = (SELECT Alumno.idAlumno FROM Alumno WHERE Alumno.usuario = usr and Alumno.contraseña = pass);
-    
+	
 	UPDATE Alumno 
-    SET contraseña = newPass WHERE Alumno.idAlumno = id;
+    SET contraseña = newPass WHERE Alumno.id = usr;
 
 	
 END //
 DELIMITER ;
-#CALL AlumnoAjustes( 'q', 'q', 'w');
-
+#CALL AlumnoAjustes( 1, 'w');
 #SELECT * from Alumno
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*Maestro : Alumnos
 	nombre de los grupos del maestro, alumnos de cada grupo
+*/
+drop procedure if exists MaestroAlumnos;
+DELIMITER //
+CREATE PROCEDURE MaestroAlumnos(IN usr INT)
+BEGIN
+	SELECT Grupo.nombreGrupo, Alumno.nombreCompleto, Alumno.id as idAlumno, Grupo.id as idGrupo
+	FROM ((((Maestro
+        INNER JOIN GrupoMaestro ON Maestro.id = GrupoMaestro.idMaestro)
+        INNER JOIN Grupo ON GrupoMaestro.idGrupo = Grupo.id)
+        INNER JOIN GrupoAlumno ON Grupo.id = GrupoAlumno.idGrupo)
+        INNER JOIN Alumno ON GrupoAlumno.idAlumno = Alumno.id)
+        
+	WHERE  Maestro.id = usr;
+END //
+DELIMITER ;
+CALL MaestroAlumnos( 1 );
+
+
+
+
+/*Maestro : AlumnosFaltas
 	Asignar faltas a cada alumno
+*/
+drop procedure if exists AlumnosFaltas;
+DELIMITER //
+CREATE PROCEDURE AlumnosFaltas(IN idAlum INT, IN idGrup INT)
+BEGIN
+	UPDATE GrupoAlumno 
+    SET faltas = (faltas+1) WHERE GrupoAlumno.idAlumno = idAlum  and GrupoAlumno.idGrupo = idGrup;
+END //
+DELIMITER ;
+#CALL AlumnosFaltas(1,1);
+#SELECT * FROM GrupoAlumno;
+
+
+/*Maestro : AlumnosAdd
     ♦Añadir alumno
 		añadir nombre, añadir usuario, añadir contraseña.
         asociar nuevo alumno con un grupo
+*/
+drop procedure if exists AlumnosAdd;
+DELIMITER //
+CREATE PROCEDURE AlumnosAdd(IN nombre VARCHAR(30), IN usr VARCHAR(16),IN pass VARCHAR(16))
+BEGIN
+	INSERT INTO Alumno (nombreCompleto , usuario, contraseña) VALUES 
+	(nombre,usr,pass);
+    
+END //
+DELIMITER ;
+#CALL AlumnosAdd('NewNombre','NewUser','NewPass');
+#SELECT * FROM Alumno;
+
+
+/*Maestro : AlumnosAddGrupo
 	♦Añadir grupo
 		añadir nombre del grupo y asociarlo con el profesor
 */
+drop procedure if exists AlumnosAddGrupo;
+DELIMITER //
+CREATE PROCEDURE AlumnosAddGrupo(IN idMtro INT,IN newGroup VARCHAR(30))
+BEGIN
+    DECLARE idNewGroup INT;
+
+	INSERT INTO Grupo (nombreGrupo) VALUES 
+	(newGroup);
+    SET idNewGroup = (SELECT Grupo.id FROM Grupo WHERE Grupo.nombreGrupo = newGroup);
+    
+	INSERT INTO GrupoMaestro (idMaestro,idGrupo) VALUES 
+	(idMtro,idNewGroup);
+    
+END //
+DELIMITER ;
+#CALL AlumnosAddGrupo(1,'NewGroup',);
+#SELECT * FROM Alumno;
+
+
+
+
+
 
 /*Maestro : Trabajos
 	nombre de las actividades que hizo el profesor
@@ -187,17 +298,15 @@ DELIMITER ;
 */
 drop procedure if exists MaestroAjustes;
 DELIMITER //
-CREATE PROCEDURE MaestroAjustes(IN usr VARCHAR(16), IN pass VARCHAR(16),IN newPass VARCHAR(16))
+CREATE PROCEDURE MaestroAjustes(IN usr INT,IN newPass VARCHAR(16))
 BEGIN
-	DECLARE id INT;
-    SET id = (SELECT Maestro.idMaestro FROM Maestro WHERE Maestro.usuario = usr and Maestro.contraseña = pass);
-    
+	
 	UPDATE Maestro 
-    SET contraseña = newPass WHERE Maestro.idMaestro = id;
+    SET contraseña = newPass WHERE Maestro.id = usr;
 
 	
 END //
 DELIMITER ;
-#CALL MaestroAjustes( 'q', 'q', 'w');
+#CALL MaestroAjustes( 1, 'w');
 
 #SELECT * from Maestro

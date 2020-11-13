@@ -3,19 +3,19 @@ let config = require('../helpers/config')
 let conexion = mysql.createConnection(config)
 
 module.exports.inicio_sesion = (request,response) => {
-    let sql = 'SELECT Alumno.perfil, Alumno.idAlumno FROM Alumno WHERE Alumno.usuario = ? and Alumno.contraseña =?'
+    let sql = 'SELECT Alumno.perfil, Alumno.id FROM Alumno WHERE Alumno.usuario = ? and Alumno.contraseña =?'
     conexion.query(sql, [request.params.user, request.params.pass], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
         else if(results == ''){
-            let sql = 'SELECT Maestro.perfil, Maestro.idMaestro FROM Maestro WHERE Maestro.usuario =? and Maestro.contraseña = ?'
+            let sql = 'SELECT Maestro.perfil, Maestro.id FROM Maestro WHERE Maestro.usuario =? and Maestro.contraseña = ?'
             conexion.query(sql, [request.params.user, request.params.pass], (error, results, fields) =>{
                 if(error){
                     response.send(error)
                 }
                 else if(results == ''){
-                    let sql = 'SELECT ControlParental.perfil, ControlParental.idControlParental FROM ControlParental WHERE ControlParental.usuario = ? and ControlParental.contraseña = ?'
+                    let sql = 'SELECT ControlParental.perfil, ControlParental.id FROM ControlParental WHERE ControlParental.usuario = ? and ControlParental.contraseña = ?'
                     conexion.query(sql, [request.params.user, request.params.pass], (error, results, fields) =>{
                         if(error){
                             response.send(error)
@@ -38,8 +38,8 @@ module.exports.inicio_sesion = (request,response) => {
 
 
 module.exports.controlParentalCalificaciones = (request,response) => {
-    let sql = 'Call ControlParentalCalificaciones(?,?)'
-    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+    let sql = 'Call ControlParentalCalificaciones(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
@@ -47,8 +47,8 @@ module.exports.controlParentalCalificaciones = (request,response) => {
     })
 } 
 module.exports.controlParentalAsistencias = (request,response) => {
-    let sql = 'Call ControlParentalAsistencias(?,?)'
-    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+    let sql = 'Call ControlParentalAsistencias(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
@@ -56,8 +56,8 @@ module.exports.controlParentalAsistencias = (request,response) => {
     })
 } 
 module.exports.controlParentalNivelConocimiento = (request,response) => {
-    let sql = 'Call ControlParentalNivelConocimiento(?,?)'
-    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+    let sql = 'Call ControlParentalNivelConocimiento(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
@@ -67,8 +67,8 @@ module.exports.controlParentalNivelConocimiento = (request,response) => {
 
 
 module.exports.alumnoActividades = (request,response) => {
-    let sql = 'Call AlumnoActividades(?,?)'
-    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+    let sql = 'Call AlumnoActividades(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
@@ -77,8 +77,8 @@ module.exports.alumnoActividades = (request,response) => {
 } 
 
 module.exports.alumnoGrupos = (request,response) => {
-    let sql = 'Call AlumnoGrupos(?,?)'
-    conexion.query(sql, [request.params.usr, request.params.pass], (error, results, fields) =>{
+    let sql = 'Call AlumnoGrupos(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
@@ -87,8 +87,8 @@ module.exports.alumnoGrupos = (request,response) => {
 } 
 
 module.exports.alumnoAjustes = (request,response) => {
-    let sql = 'Call AlumnoAjustes(?,?,?)'
-    conexion.query(sql, [request.params.usr, request.params.pass, request.params.confirm], (error, results, fields) =>{
+    let sql = 'Call AlumnoAjustes(?,?)'
+    conexion.query(sql, [request.params.id, request.params.confirm], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
@@ -99,8 +99,8 @@ module.exports.alumnoAjustes = (request,response) => {
 
 
 module.exports.maestroAjustes = (request,response) => {
-    let sql = 'Call MaestroAjustes(?,?,?)'
-    conexion.query(sql, [request.params.usr, request.params.pass, request.params.confirm], (error, results, fields) =>{
+    let sql = 'Call MaestroAjustes(?,?)'
+    conexion.query(sql, [request.params.id, request.params.confirm], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
