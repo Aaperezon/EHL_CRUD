@@ -205,11 +205,11 @@ BEGIN
         INNER JOIN Grupo ON GrupoMaestro.idGrupo = Grupo.id)
         INNER JOIN GrupoAlumno ON Grupo.id = GrupoAlumno.idGrupo)
         INNER JOIN Alumno ON GrupoAlumno.idAlumno = Alumno.id)
-        
-	WHERE  Maestro.id = usr;
+	WHERE  Maestro.id = usr
+    ORDER BY Grupo.nombreGrupo;
 END //
 DELIMITER ;
-CALL MaestroAlumnos( 1 );
+#CALL MaestroAlumnos( 1 );
 
 
 
@@ -273,6 +273,28 @@ DELIMITER ;
 
 
 
+/*Maestro : AlumnosGruposMaestro
+	♦Enlistar grupos existentes releacionados con el maestro
+*/
+drop procedure if exists AlumnosGruposMaestro;
+DELIMITER //
+CREATE PROCEDURE AlumnosGruposMaestro(IN usr INT)
+BEGIN
+   SELECT Grupo.nombreGrupo
+	FROM ((Maestro
+        INNER JOIN GrupoMaestro ON Maestro.id = GrupoMaestro.idMaestro)
+        INNER JOIN Grupo ON GrupoMaestro.idGrupo = Grupo.id)
+	WHERE  Maestro.id = usr
+    ORDER BY Grupo.nombreGrupo;
+    
+END //
+DELIMITER ;
+#CALL AlumnosGruposMaestro(1);
+#SELECT * FROM Alumno;
+
+
+
+
 
 /*Maestro : Trabajos
 	nombre de las actividades que hizo el profesor
@@ -283,7 +305,24 @@ DELIMITER ;
 	♦Añadir actividad
 		añadir nombre de la actividad, añadir pregunta, añadir respuestaCorrecta, añadir respuesta2, añadir respuesta3
 */
-
+drop procedure if exists MaestroTrabajos;
+DELIMITER //
+CREATE PROCEDURE MaestroTrabajos(IN usr INT)
+BEGIN
+   SELECT DISTINCT Actividad.nombreActividad, Grupo.nombreGrupo
+	FROM (((((Maestro
+        INNER JOIN GrupoMaestro ON Maestro.id = GrupoMaestro.idMaestro)
+        INNER JOIN Grupo ON GrupoMaestro.idGrupo = Grupo.id)
+		INNER JOIN GrupoActividad ON Grupo.id = GrupoActividad.idActividad)
+		INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.id)
+		INNER JOIN ActividadCQuiz ON Actividad.id = ActividadCQuiz.idActividad)
+	WHERE  Maestro.id = usr
+    ORDER BY Actividad.nombreActividad;
+    
+END //
+DELIMITER ;
+CALL MaestroTrabajos(1);
+#SELECT * FROM Alumno;
 
 
 

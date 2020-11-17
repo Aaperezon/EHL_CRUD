@@ -16,10 +16,15 @@ router.get('/alumnoGrupos/:id', ehlController.alumnoGrupos)
 router.get('/alumnoAjustes/:id/:confirm', ehlController.alumnoAjustes)
 
 
-
+router.get('/maestroAlumnos/:id', ehlController.maestroAlumnos)
+router.get('/alumnosGruposMaestro/:id', ehlController.alumnosGruposMaestro)
+router.post('/maestroAgregarAlumno', ehlController.maestroAgregarAlumno)
+router.get('/maestroTrabajos/:id', ehlController.maestroTrabajos)
 
 
 router.get('/maestroAjustes/:id/:confirm', ehlController.maestroAjustes)
+
+
 
 
 

@@ -16,6 +16,20 @@ INSERT INTO Actividad (nombreActividad) VALUES
 ('Actividad java'),
 ('Actividad4 SQL');
 
+INSERT INTO CQuiz (pregunta, respuestaCorrecta, respuesta ) VALUES
+('Pregunta 1','Respuesta correcta 1','Respuesta incorrecta'),
+('Pregunta 2','Respuesta correcta 2','Respuesta incorrecta'),
+('Pregunta 3','Respuesta correcta 3','Respuesta incorrecta'),
+('Pregunta 4','Respuesta correcta 4','Respuesta incorrecta'),
+('Pregunta 5','Respuesta correcta 5','Respuesta incorrecta');
+
+INSERT INTO ActividadCQuiz (idCQuiz, idActividad) VALUES 
+(1,2),
+(2,2),
+(3,2),
+(4,2),
+(5,2);
+
 INSERT INTO ControlParental (usuario, contraseña) VALUES 
 ('c','c'),
 ('CP-Aaron','cpapo'),
@@ -41,8 +55,8 @@ INSERT INTO GrupoActividad (idActividad, idGrupo) VALUES
 (4,3);
 
 INSERT INTO GrupoAlumno (idAlumno,idGrupo,faltas) VALUES 
-(1,2,0),
-(1,1,2),
+(1,4,0),
+(1,2,2),
 (2,2,0),
 (3,2,4),
 (4,2,2);

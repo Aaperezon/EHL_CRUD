@@ -98,6 +98,56 @@ module.exports.alumnoAjustes = (request,response) => {
 
 
 
+
+
+
+
+
+
+module.exports.maestroAlumnos = (request,response) => {
+    let sql = 'Call MaestroAlumnos(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+module.exports.alumnosGruposMaestro = (request,response) => {
+    let sql = 'Call AlumnosGruposMaestro(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+module.exports.maestroAgregarAlumno = (request,response) => {
+    let car = request.body
+    let sql = 'INSERT INTO Alumno SET ?'
+    conexion.query(sql, [car], (error,results,fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results)
+    })
+}
+module.exports.maestroTrabajos = (request,response) => {
+    let sql = 'Call MaestroTrabajos(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+
+
+
+
+
 module.exports.maestroAjustes = (request,response) => {
     let sql = 'Call MaestroAjustes(?,?)'
     conexion.query(sql, [request.params.id, request.params.confirm], (error, results, fields) =>{
