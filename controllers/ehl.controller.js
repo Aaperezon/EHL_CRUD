@@ -123,16 +123,26 @@ module.exports.alumnosGruposMaestro = (request,response) => {
     })
 }
 
-module.exports.maestroAgregarAlumno = (request,response) => {
-    let car = request.body
-    let sql = 'INSERT INTO Alumno SET ?'
-    conexion.query(sql, [car], (error,results,fields) =>{
+module.exports.maestroAgregarAlumnoConGrupo = (request,response) => {
+    let sql = 'Call MaestroAgregarAlumnoConGrupo(?,?,?,?,?,?,?)'
+    conexion.query(sql, [request.params.id,request.params.nName.replace(/\+/g," "),request.params.nUser,request.params.nPass,request.params.nGroup.replace(/\+/g," "),request.params.nUserCP,request.params.nPassCP], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
-        response.json(results)
+        response.json(results[0])
     })
 }
+module.exports.maestroAgregarAlumnoSinGrupo = (request,response) => {
+    let sql = 'Call MaestroAgregarAlumnoSinGrupo(?,?,?,?,?,?)'
+    conexion.query(sql, [request.params.nName.replace(/\+/g," "),request.params.nUser,request.params.nPass,request.params.Group.replace(/\+/g," "),request.params.nUserCP,request.params.nPassCP], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+
 module.exports.maestroTrabajos = (request,response) => {
     let sql = 'Call MaestroTrabajos(?)'
     conexion.query(sql, [request.params.id], (error, results, fields) =>{

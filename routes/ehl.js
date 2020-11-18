@@ -18,7 +18,8 @@ router.get('/alumnoAjustes/:id/:confirm', ehlController.alumnoAjustes)
 
 router.get('/maestroAlumnos/:id', ehlController.maestroAlumnos)
 router.get('/alumnosGruposMaestro/:id', ehlController.alumnosGruposMaestro)
-router.post('/maestroAgregarAlumno', ehlController.maestroAgregarAlumno)
+router.get('/maestroAgregarAlumnoConGrupo/:id/:nName/:nUser/:nPass/:nGroup/:nUserCP/:nPassCP', ehlController.maestroAgregarAlumnoConGrupo)
+router.get('/maestroAgregarAlumnoSinGrupo/:nName/:nUser/:nPass/:Group/:nUserCP/:nPassCP', ehlController.maestroAgregarAlumnoSinGrupo)
 router.get('/maestroTrabajos/:id', ehlController.maestroTrabajos)
 
 

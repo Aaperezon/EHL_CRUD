@@ -130,7 +130,7 @@ BEGIN
     
 END //
 DELIMITER ;
-#CALL AlumnoActividades( 1 );
+CALL AlumnoActividades( 1 );
 
 /*Alumno : Grupos
 	nombre del grupo, nombre del maestro que da ese grupo.
@@ -234,17 +234,76 @@ DELIMITER ;
 		añadir nombre, añadir usuario, añadir contraseña.
         asociar nuevo alumno con un grupo
 */
-drop procedure if exists AlumnosAdd;
+drop procedure if exists MaestroAgregarAlumnoConGrupo;
 DELIMITER //
-CREATE PROCEDURE AlumnosAdd(IN nombre VARCHAR(30), IN usr VARCHAR(16),IN pass VARCHAR(16))
+CREATE PROCEDURE MaestroAgregarAlumnoConGrupo(IN mtro INT, IN nombre VARCHAR(30), IN usr VARCHAR(16),IN pass VARCHAR(16),IN newGroup VARCHAR(16), IN usrCP VARCHAR(16),IN passCP VARCHAR(16))
 BEGIN
+    DECLARE newIDAlumno INT;
+    DECLARE newIDCP INT;
+    DECLARE newIDGroup INT;
 	INSERT INTO Alumno (nombreCompleto , usuario, contraseña) VALUES 
 	(nombre,usr,pass);
+	SET newIDAlumno = (SELECT Alumno.id FROM Alumno WHERE Alumno.nombreCompleto = nombre and usuario = usr and contraseña = pass);
+    INSERT INTO ControlParental (usuario, contraseña) VALUES 
+	(usrCP,passCP);
+	SET newIDCP = (SELECT ControlParental.id FROM ControlParental WHERE usuario = usrCP and contraseña = passCP);
+    INSERT INTO AlumnoControlParental (idAlumno, idControlParental) VALUES 
+	(newIDAlumno,newIDCP);
+    
+	INSERT INTO Grupo (nombreGrupo) VALUES 
+	(newGroup);
+	SET newIDGroup = (SELECT Grupo.id FROM Grupo WHERE nombreGrupo = newGroup);
+    INSERT INTO GrupoAlumno (idAlumno,idGrupo,faltas) VALUES 
+	(newIDAlumno,newIDGroup,0);
+	INSERT INTO GrupoMaestro (idGrupo,idMaestro) VALUES 
+	(newIDGroup,mtro);
+    
     
 END //
 DELIMITER ;
-#CALL AlumnosAdd('NewNombre','NewUser','NewPass');
-#SELECT * FROM Alumno;
+#CALL MaestroAgregarAlumnoConGrupo(1,'NewNombre','NewUser','NewPass','nGroup' ,'n','n');
+
+drop procedure if exists MaestroAgregarAlumnoSinGrupo;
+DELIMITER //
+CREATE PROCEDURE MaestroAgregarAlumnoSinGrupo(IN nombre VARCHAR(30), IN usr VARCHAR(16),IN pass VARCHAR(16),IN newGroup VARCHAR(16), IN usrCP VARCHAR(16),IN passCP VARCHAR(16))
+BEGIN
+    DECLARE newIDAlumno INT;
+    DECLARE newIDCP INT;
+    DECLARE IDGroup INT;
+    
+	INSERT INTO Alumno (nombreCompleto , usuario, contraseña) VALUES 
+	(nombre,usr,pass);
+	SET newIDAlumno = (SELECT Alumno.id FROM Alumno WHERE Alumno.nombreCompleto = nombre and usuario = usr and contraseña = pass);
+    
+    INSERT INTO ControlParental (usuario, contraseña) VALUES 
+	(usrCP,passCP);
+    
+	SET newIDCP = (SELECT ControlParental.id FROM ControlParental WHERE usuario = usrCP and contraseña = passCP);
+    
+    INSERT INTO AlumnoControlParental (idAlumno, idControlParental) VALUES 
+	(newIDAlumno,newIDCP);
+    
+	SET IDGroup = (SELECT Grupo.id FROM Grupo WHERE nombreGrupo = newGroup);
+    
+	INSERT INTO GrupoAlumno (idAlumno,idGrupo,faltas) VALUES 
+	(newIDAlumno,IDGroup,0);
+   
+    
+END //
+DELIMITER ;
+#CALL MaestroAgregarAlumnoSinGrupo('NewNombre','NewUser','NewPass','Clase Deportes' ,'n','n');
+/*
+	SELECT * FROM Alumno;
+
+	SELECT Alumno.id FROM Alumno WHERE Alumno.nombreCompleto = 'Emmanuel del Río Sarmiento' and usuario = 'a' and contraseña = 'a' LIMIT 1;
+	SELECT ControlParental.id FROM ControlParental WHERE usuario = 'c' and contraseña = 'c' LIMIT 1;
+	SELECT Grupo.id FROM Grupo WHERE nombreGrupo = 'Clase Deportes' LIMIT 1;
+*/
+
+
+
+
+
 
 
 /*Maestro : AlumnosAddGrupo
@@ -321,7 +380,7 @@ BEGIN
     
 END //
 DELIMITER ;
-CALL MaestroTrabajos(1);
+#CALL MaestroTrabajos(1);
 #SELECT * FROM Alumno;
 
 
