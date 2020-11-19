@@ -19,7 +19,7 @@ drop table if exists Memorama;
 CREATE TABLE Maestro(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	nombreCompleto VARCHAR(30) NOT NULL,
-    foto VARCHAR(255) NOt NULL default 'liga o url de la foto',
+    foto VARCHAR(255) NOT NULL default 'maestro/avatar.png',
 	usuario VARCHAR(16) NOT NULL,
 	contraseña VARCHAR(16) NOT NULL,
     perfil varchar (7) null default 'Maestro'

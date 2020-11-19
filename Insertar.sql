@@ -52,7 +52,8 @@ INSERT INTO GrupoActividad (idActividad, idGrupo) VALUES
 (1,1),
 (2,1),
 (3,2),
-(4,3);
+(4,3),
+(4,4);
 
 INSERT INTO GrupoAlumno (idAlumno,idGrupo,faltas) VALUES 
 (1,4,0),
@@ -70,7 +71,8 @@ INSERT INTO Calificacion (idActividad,idAlumno,calificacion) VALUES
 (2,2,9),
 (2,3,9),
 (2,4,9),
-(3,1,9);
+(3,3,8),
+(4,1,9);
 
 INSERT INTO GrupoMaestro (idMaestro,idGrupo) VALUES 
 (1,4),

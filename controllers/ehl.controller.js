@@ -102,8 +102,6 @@ module.exports.alumnoAjustes = (request,response) => {
 
 
 
-
-
 module.exports.maestroAlumnos = (request,response) => {
     let sql = 'Call MaestroAlumnos(?)'
     conexion.query(sql, [request.params.id], (error, results, fields) =>{
@@ -113,9 +111,47 @@ module.exports.maestroAlumnos = (request,response) => {
         response.json(results[0])
     })
 }
+
+module.exports.maestroFotoAvatar = (request,response) => {
+    let sql = 'Call FotoAvatar(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+module.exports.actualizarMaestroFotoAvatar = (request,response) => {
+    let sql = 'Call ActualizaFotoAvatar(?)'
+    conexion.query(sql, [request.params.id, request.params.path], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
 module.exports.alumnosGruposMaestro = (request,response) => {
     let sql = 'Call AlumnosGruposMaestro(?)'
     conexion.query(sql, [request.params.id], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+module.exports.alumnosFaltas = (request,response) => {
+    let sql = 'Call AlumnosFaltas(?,?)'
+    conexion.query(sql, [request.params.idAlumno, request.params.idGrupo], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+module.exports.maestroAlumnosBoleta = (request,response) => {
+    let sql = 'Call MaestroAlumnosBoleta(?,?)'
+    conexion.query(sql, [request.params.idAlumno, request.params.idGrupo], (error, results, fields) =>{
         if(error){
             response.send(error)
         }

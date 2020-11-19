@@ -17,7 +17,11 @@ router.get('/alumnoAjustes/:id/:confirm', ehlController.alumnoAjustes)
 
 
 router.get('/maestroAlumnos/:id', ehlController.maestroAlumnos)
+router.get('/maestroFotoAvatar/:id', ehlController.maestroFotoAvatar)
+router.get('/actualizarMaestroFotoAvatar/:id/:path', ehlController.actualizarMaestroFotoAvatar)
 router.get('/alumnosGruposMaestro/:id', ehlController.alumnosGruposMaestro)
+router.get('/alumnosFaltas/:idAlumno/:idGrupo', ehlController.alumnosFaltas)
+router.get('/maestroAlumnosBoleta/:idAlumno/:idGrupo', ehlController.maestroAlumnosBoleta)
 router.get('/maestroAgregarAlumnoConGrupo/:id/:nName/:nUser/:nPass/:nGroup/:nUserCP/:nPassCP', ehlController.maestroAgregarAlumnoConGrupo)
 router.get('/maestroAgregarAlumnoSinGrupo/:nName/:nUser/:nPass/:Group/:nUserCP/:nPassCP', ehlController.maestroAgregarAlumnoSinGrupo)
 router.get('/maestroTrabajos/:id', ehlController.maestroTrabajos)

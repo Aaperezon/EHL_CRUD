@@ -130,7 +130,7 @@ BEGIN
     
 END //
 DELIMITER ;
-CALL AlumnoActividades( 1 );
+#CALL AlumnoActividades( 1 );
 
 /*Alumno : Grupos
 	nombre del grupo, nombre del maestro que da ese grupo.
@@ -182,10 +182,30 @@ DELIMITER ;
 
 
 
+/*Maestro : FotoAvatar
+*/
+drop procedure if exists FotoAvatar;
+DELIMITER //
+CREATE PROCEDURE FotoAvatar(IN usr INT)
+BEGIN
+	SELECT Maestro.foto 
+    FROM Maestro
+    WHERE Maestro.id = usr;
+END //
+DELIMITER ;
+#CALL FotoAvatar( 1 );
 
-
-
-
+/*Maestro : ActualizaFotoAvatar
+*/
+drop procedure if exists ActualizaFotoAvatar;
+DELIMITER //
+CREATE PROCEDURE ActualizaFotoAvatar(IN usr INT, IN newFoto VARCHAR(255))
+BEGIN
+	UPDATE Maestro 
+    SET foto = newFoto WHERE Maestro.id = usr;
+END //
+DELIMITER ;
+#CALL ActualizaFotoAvatar( 1 ," " );
 
 
 
@@ -210,7 +230,6 @@ BEGIN
 END //
 DELIMITER ;
 #CALL MaestroAlumnos( 1 );
-
 
 
 
@@ -263,6 +282,8 @@ END //
 DELIMITER ;
 #CALL MaestroAgregarAlumnoConGrupo(1,'NewNombre','NewUser','NewPass','nGroup' ,'n','n');
 
+
+
 drop procedure if exists MaestroAgregarAlumnoSinGrupo;
 DELIMITER //
 CREATE PROCEDURE MaestroAgregarAlumnoSinGrupo(IN nombre VARCHAR(30), IN usr VARCHAR(16),IN pass VARCHAR(16),IN newGroup VARCHAR(16), IN usrCP VARCHAR(16),IN passCP VARCHAR(16))
@@ -306,28 +327,6 @@ DELIMITER ;
 
 
 
-/*Maestro : AlumnosAddGrupo
-	♦Añadir grupo
-		añadir nombre del grupo y asociarlo con el profesor
-*/
-drop procedure if exists AlumnosAddGrupo;
-DELIMITER //
-CREATE PROCEDURE AlumnosAddGrupo(IN idMtro INT,IN newGroup VARCHAR(30))
-BEGIN
-    DECLARE idNewGroup INT;
-
-	INSERT INTO Grupo (nombreGrupo) VALUES 
-	(newGroup);
-    SET idNewGroup = (SELECT Grupo.id FROM Grupo WHERE Grupo.nombreGrupo = newGroup);
-    
-	INSERT INTO GrupoMaestro (idMaestro,idGrupo) VALUES 
-	(idMtro,idNewGroup);
-    
-END //
-DELIMITER ;
-#CALL AlumnosAddGrupo(1,'NewGroup',);
-#SELECT * FROM Alumno;
-
 
 
 
@@ -349,6 +348,30 @@ BEGIN
 END //
 DELIMITER ;
 #CALL AlumnosGruposMaestro(1);
+#SELECT * FROM Alumno;
+
+
+/*Maestro : Boleta
+
+*/
+
+drop procedure if exists MaestroAlumnosBoleta;
+DELIMITER //
+CREATE PROCEDURE MaestroAlumnosBoleta(IN idAlumno INT, IN idGrupo INT)
+BEGIN
+   SELECT Alumno.nombreCompleto, Actividad.nombreActividad, Calificacion.calificacion
+	FROM (((((Alumno
+        INNER JOIN GrupoAlumno ON Alumno.id = GrupoAlumno.idAlumno)
+        INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
+        INNER JOIN Actividad)
+        INNER JOIN GrupoActividad ON Actividad.id = GrupoActividad.idActividad and Grupo.id = GrupoActividad.idGrupo)
+        INNER JOIN Calificacion ON Actividad.id = Calificacion.idActividad and GrupoAlumno.idAlumno = Calificacion.idAlumno)
+		
+	WHERE Alumno.id = idAlumno and Grupo.id = idGrupo;
+
+END //
+DELIMITER ;
+#CALL MaestroAlumnosBoleta(1,4);
 #SELECT * FROM Alumno;
 
 
@@ -406,5 +429,4 @@ BEGIN
 END //
 DELIMITER ;
 #CALL MaestroAjustes( 1, 'w');
-
 #SELECT * from Maestro
