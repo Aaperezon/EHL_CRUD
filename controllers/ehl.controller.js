@@ -123,7 +123,9 @@ module.exports.maestroFotoAvatar = (request,response) => {
 }
 
 module.exports.actualizarMaestroFotoAvatar = (request,response) => {
-    let sql = 'Call ActualizaFotoAvatar(?)'
+    console.log(request.params.path)
+    //request.params.nName.replace(/\+/g," ")
+    let sql = 'Call ActualizaFotoAvatar(?,?)'
     conexion.query(sql, [request.params.id, request.params.path], (error, results, fields) =>{
         if(error){
             response.send(error)
