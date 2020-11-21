@@ -14,7 +14,11 @@ INSERT INTO Actividad (nombreActividad) VALUES
 ('Actividad C++'),
 ('Actividad C#'),
 ('Actividad java'),
-('Actividad4 SQL');
+('Actividad4 SQL'),
+('flashcard SQL'),
+('flashcard java'),
+('flashcard c'),
+('flashcard c++');
 
 INSERT INTO CQuiz (pregunta, respuestaCorrecta, respuesta ) VALUES
 ('Pregunta 1','Respuesta correcta 1','Respuesta incorrecta'),
@@ -24,11 +28,17 @@ INSERT INTO CQuiz (pregunta, respuestaCorrecta, respuesta ) VALUES
 ('Pregunta 5','Respuesta correcta 5','Respuesta incorrecta');
 
 INSERT INTO ActividadCQuiz (idCQuiz, idActividad) VALUES 
-(1,2),
-(2,2),
-(3,2),
-(4,2),
-(5,2);
+(1,3),
+(2,3),
+(3,3),
+(4,3),
+(5,3);
+INSERT INTO Guia (idActividad, url) VALUES
+(5,'url 1'),
+(6,'url 2'),
+(7,'url 3'),
+(8, 'url 4');
+
 
 INSERT INTO ControlParental (usuario, contraseña) VALUES 
 ('c','c'),
@@ -53,7 +63,10 @@ INSERT INTO GrupoActividad (idActividad, idGrupo) VALUES
 (2,1),
 (3,2),
 (4,3),
-(4,4);
+(4,4),
+(5,2),
+(6,2),
+(7,2);
 
 INSERT INTO GrupoAlumno (idAlumno,idGrupo,faltas) VALUES 
 (1,4,0),

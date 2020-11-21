@@ -24,7 +24,8 @@ router.get('/alumnosFaltas/:idAlumno/:idGrupo', ehlController.alumnosFaltas)
 router.get('/maestroAlumnosBoleta/:idAlumno/:idGrupo', ehlController.maestroAlumnosBoleta)
 router.get('/maestroAgregarAlumnoConGrupo/:id/:nName/:nUser/:nPass/:nGroup/:nUserCP/:nPassCP', ehlController.maestroAgregarAlumnoConGrupo)
 router.get('/maestroAgregarAlumnoSinGrupo/:nName/:nUser/:nPass/:Group/:nUserCP/:nPassCP', ehlController.maestroAgregarAlumnoSinGrupo)
-router.get('/maestroTrabajos/:id', ehlController.maestroTrabajos)
+router.get('/maestroTrabajosCQuiz/:id', ehlController.maestroTrabajosCQuiz)
+router.get('/maestroTrabajosGuias/:id', ehlController.maestroTrabajosGuias)
 
 
 router.get('/maestroAjustes/:id/:confirm', ehlController.maestroAjustes)

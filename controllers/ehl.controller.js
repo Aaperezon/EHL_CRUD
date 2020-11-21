@@ -181,8 +181,17 @@ module.exports.maestroAgregarAlumnoSinGrupo = (request,response) => {
 }
 
 
-module.exports.maestroTrabajos = (request,response) => {
-    let sql = 'Call MaestroTrabajos(?)'
+module.exports.maestroTrabajosCQuiz = (request,response) => {
+    let sql = 'Call MaestroTrabajosCQuiz(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+module.exports.maestroTrabajosGuias = (request,response) => {
+    let sql = 'Call MaestroTrabajosGuias(?)'
     conexion.query(sql, [request.params.id], (error, results, fields) =>{
         if(error){
             response.send(error)

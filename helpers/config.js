@@ -1,5 +1,5 @@
 let config = {
-    host: '35.224.82.246',
+    host: '35.225.155.184',
     user: 'root',
     password: 'ehl',
     database: 'ehl'
