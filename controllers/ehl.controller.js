@@ -200,6 +200,88 @@ module.exports.maestroTrabajosGuias = (request,response) => {
     })
 }
 
+module.exports.maestroAgregarCQuizConGrupo = (request,response) => {
+    let sql = 'Call MaestroAgregarCQuizConGrupo(?,?,?)'
+    conexion.query(sql, [request.params.id,request.params.nGrupo.replace(/\+/g," "), request.params.nActivity.replace(/\+/g," ")], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+module.exports.maestroAgregarCQuizSinGrupo = (request,response) => {
+    let sql = 'Call MaestroAgregarCQuizSinGrupo(?,?)'
+    conexion.query(sql, [request.params.nGrupo.replace(/\+/g," "), request.params.nActivity.replace(/\+/g," ")], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+module.exports.maestroAgregarGuiaConGrupo = (request,response) => {
+    let sql = 'Call MaestroAgregarGuiaConGrupo(?,?,?,?)'
+    conexion.query(sql, [request.params.id,request.params.nGrupo.replace(/\+/g," "), request.params.nActivity.replace(/\+/g," "), request.params.nURL], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+module.exports.maestroAgregarGuiaSinGrupo = (request,response) => {
+    let sql = 'Call MaestroAgregarGuiaSinGrupo(?,?,?)'
+    conexion.query(sql, [request.params.nGrupo.replace(/\+/g," "), request.params.nActivity.replace(/\+/g," "), request.params.nURL], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+
+module.exports.maestroQuitarGuia = (request,response) => {
+    let sql = 'Call MaestroQuitarGuia(?)'
+    conexion.query(sql, [request.params.idActividad], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+module.exports.maestroVerCQuiz = (request,response) => {
+    let sql = 'Call MaestroVerCQuiz(?)'
+    conexion.query(sql, [request.params.nameActivity.replace(/\+/g," ")], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+module.exports.maestroAgregarPregunta = (request,response) => {
+    let sql = 'Call MaestroAgregarPregunta(?,?,?,?)'
+    conexion.query(sql, [request.params.nameActivity.replace(/\+/g," "),request.params.nPregunta.replace(/\+/g," "),request.params.nRessCorrecta.replace(/\+/g," "),request.params.nRes.replace(/\+/g," ")], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

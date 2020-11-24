@@ -110,7 +110,7 @@ foreign key (idAlumno) references Alumno(id) ON DELETE CASCADE ON UPDATE CASCADE
 CREATE TABLE Calificacion(
 idActividad INT NOT NULL, 
 idAlumno INT NOT NULL, 
-calificacion FLOAT NOT NULL, 
+calificacion FLOAT NOT NULL DEFAULT 0.0, 
 PRIMARY KEY( idActividad,idAlumno), 
 foreign key (idActividad) references Actividad(id) ON DELETE CASCADE ON UPDATE CASCADE,
 foreign key (idAlumno) references GrupoAlumno(idAlumno) ON DELETE CASCADE ON UPDATE CASCADE

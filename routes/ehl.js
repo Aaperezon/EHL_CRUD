@@ -26,6 +26,16 @@ router.get('/maestroAgregarAlumnoConGrupo/:id/:nName/:nUser/:nPass/:nGroup/:nUse
 router.get('/maestroAgregarAlumnoSinGrupo/:nName/:nUser/:nPass/:Group/:nUserCP/:nPassCP', ehlController.maestroAgregarAlumnoSinGrupo)
 router.get('/maestroTrabajosCQuiz/:id', ehlController.maestroTrabajosCQuiz)
 router.get('/maestroTrabajosGuias/:id', ehlController.maestroTrabajosGuias)
+router.get('/maestroAgregarCQuizConGrupo/:id/:nGrupo/:nActivity', ehlController.maestroAgregarCQuizConGrupo)
+router.get('/maestroAgregarCQuizSinGrupo/:nGrupo/:nActivity', ehlController.maestroAgregarCQuizSinGrupo)
+router.get('/maestroAgregarGuiaConGrupo/:id/:nGrupo/:nActivity/:nURL', ehlController.maestroAgregarGuiaConGrupo)
+router.get('/maestroAgregarGuiaSinGrupo/:nGrupo/:nActivity/:nURL', ehlController.maestroAgregarGuiaSinGrupo)
+router.delete('/maestroQuitarGuia/:idActividad', ehlController.maestroQuitarGuia)
+
+router.get('/maestroVerCQuiz/:nameActivity', ehlController.maestroVerCQuiz)
+router.get('/maestroAgregarPregunta/:nameActivity/:nPregunta/:nRessCorrecta/:nRes', ehlController.maestroAgregarPregunta)
+
+
 
 
 router.get('/maestroAjustes/:id/:confirm', ehlController.maestroAjustes)

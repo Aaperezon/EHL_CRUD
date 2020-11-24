@@ -130,8 +130,10 @@ BEGIN
     
 END //
 DELIMITER ;
-#CALL AlumnoActividades( 1 );
+#CALL AlumnoActividades( 5 );
 
+	
+    
 /*Alumno : Grupos
 	nombre del grupo, nombre del maestro que da ese grupo.
 */
@@ -325,12 +327,6 @@ DELIMITER ;
 
 
 
-
-
-
-
-
-
 /*Maestro : AlumnosGruposMaestro
 	♦Enlistar grupos existentes releacionados con el maestro
 */
@@ -411,7 +407,7 @@ drop procedure if exists MaestroTrabajosGuias;
 DELIMITER //
 CREATE PROCEDURE MaestroTrabajosGuias(IN usr INT)
 BEGIN
-  SELECT DISTINCT Actividad.nombreActividad, Grupo.nombreGrupo
+  SELECT DISTINCT Actividad.nombreActividad, Grupo.nombreGrupo, Actividad.id
 	FROM (((((Maestro
 		INNER JOIN Grupo)
         INNER JOIN GrupoMaestro ON Grupo.id = GrupoMaestro.idGrupo and Maestro.id = GrupoMaestro.idMaestro)
@@ -423,58 +419,180 @@ BEGIN
     
 END //
 DELIMITER ;
-CALL MaestroTrabajosGuias(1);
+#CALL MaestroTrabajosGuias(1);
 #SELECT * FROM Alumno;
 
 
 
 
-
-drop procedure if exists MaestroAñadirCQuizConGrupo;
+drop procedure if exists MaestroAgregarCQuizConGrupo;
 DELIMITER //
-CREATE PROCEDURE MaestroAñadirCQuizConGrupo(IN grupo INT, IN nameActivity Varchar(30))
+CREATE PROCEDURE MaestroAgregarCQuizConGrupo(IN mtro INT, IN nameGrupo Varchar(30), IN nameActivity Varchar(30))
 BEGIN
 	DECLARE newIdActivity INT;
+	DECLARE newIdGrupo INT;
 	INSERT INTO Actividad (nombreActividad) VALUES 
 	(nameActivity);
+    INSERT INTO Grupo (nombreGrupo) VALUES 
+	(nameGrupo);
     SET newIdActivity = (SELECT Actividad.id FROM Actividad WHERE Actividad.nombreActividad = nameActivity);
+    SET newIdGrupo = (SELECT Grupo.id FROM Grupo WHERE Grupo.nombreGrupo = nameGrupo);
 	INSERT INTO GrupoActividad(idActividad, idGrupo) VALUES 
-	(newIdActivity, grupo);
-	
+	(newIdActivity, newIdGrupo);
+    INSERT INTO GrupoMaestro (idMaestro,idGrupo) VALUES
+    (mtro,newIdGrupo);
     
 END //
 DELIMITER ;
-#CALL MaestroAñadirCQuizConGrupo(2, "Actividad de Aaron");
+#CALL MaestroAgregarCQuizConGrupo(1, "Grupo nuevo", "Actividad de Aaron");
 #SELECT * FROM Alumno;
 
-drop procedure if exists MaestroAñadirCQuizConGrupo;
+
+
+drop procedure if exists MaestroAgregarCQuizSinGrupo;
 DELIMITER //
-
-
-
-
-
-
-
-
-
-
-
-drop procedure if exists MaestroAñadirGuiaConGrupo;
-DELIMITER //
-CREATE PROCEDURE MaestroAñadirGuiaConGrupo(IN grupo INT, IN nameActivity Varchar(30))
+CREATE PROCEDURE MaestroAgregarCQuizSinGrupo(IN nameGrupo Varchar(30), IN nameActivity Varchar(30))
 BEGIN
 	DECLARE newIdActivity INT;
+	DECLARE IdGrupo INT;
 	INSERT INTO Actividad (nombreActividad) VALUES 
 	(nameActivity);
     SET newIdActivity = (SELECT Actividad.id FROM Actividad WHERE Actividad.nombreActividad = nameActivity);
+    SET IdGrupo = (SELECT Grupo.id FROM Grupo WHERE Grupo.nombreGrupo = nameGrupo);
 	INSERT INTO GrupoActividad(idActividad, idGrupo) VALUES 
-	(newIdActivity, grupo);
+	(newIdActivity, IdGrupo);
+    
 
 END //
 DELIMITER ;
-CALL MaestroAñadirGuiaConGrupo(2, "Guia nueva1");
+#CALL MaestroAgregarCQuizSinGrupo("Grupo existente", "Guia nueva1");
+#SELECT * FROM Actividad;
+
+
+
+
+
+
+
+drop procedure if exists MaestroAgregarGuiaConGrupo;
+DELIMITER //
+CREATE PROCEDURE MaestroAgregarGuiaConGrupo(IN mtro INT, IN nameGrupo Varchar(30), IN nameActivity Varchar(30), IN nURL Varchar(255))
+BEGIN
+	DECLARE newIdActivity INT;
+	DECLARE newIdGrupo INT;
+	INSERT INTO Actividad (nombreActividad) VALUES 
+	(nameActivity);
+    INSERT INTO Grupo (nombreGrupo) VALUES 
+	(nameGrupo);
+    SET newIdActivity = (SELECT Actividad.id FROM Actividad WHERE Actividad.nombreActividad = nameActivity);
+    SET newIdGrupo = (SELECT Grupo.id FROM Grupo WHERE Grupo.nombreGrupo = nameGrupo);
+	INSERT INTO GrupoActividad(idActividad, idGrupo) VALUES 
+	(newIdActivity, newIdGrupo);
+    INSERT INTO GrupoMaestro (idMaestro,idGrupo) VALUES
+    (mtro,newIdGrupo);
+    INSERT INTO Guia (idActividad, url) VALUES
+	(newIdActivity,nURL);
+
+    SELECT * FROM Guia;
+END //
+DELIMITER ;
+#CALL MaestroAgregarGuiaConGrupo(1, "Grupo nuevo", "Actividad de Aaron","url generica jeje");
 #SELECT * FROM Alumno;
+
+
+
+drop procedure if exists MaestroAgregarGuiaSinGrupo;
+DELIMITER //
+CREATE PROCEDURE MaestroAgregarGuiaSinGrupo(IN nameGrupo Varchar(30), IN nameActivity Varchar(30), IN nURL Varchar(255))
+BEGIN
+	DECLARE newIdActivity INT;
+	DECLARE IdGrupo INT;
+	INSERT INTO Actividad (nombreActividad) VALUES 
+	(nameActivity);
+  
+    SET newIdActivity = (SELECT Actividad.id FROM Actividad WHERE Actividad.nombreActividad = nameActivity);
+    SET IdGrupo = (SELECT Grupo.id FROM Grupo WHERE Grupo.nombreGrupo = nameGrupo);
+	INSERT INTO GrupoActividad(idActividad, idGrupo) VALUES 
+	(newIdActivity, IdGrupo);
+   
+    INSERT INTO Guia (idActividad, url) VALUES
+	(newIdActivity,nURL);
+
+    SELECT * FROM Guia;
+END //
+DELIMITER ;
+#CALL MaestroAgregarGuiaSinGrupo( "Grupo nuevo", "Actividad de Aaron","url generica jeje");
+#SELECT * FROM Alumno;
+
+
+
+
+
+
+drop procedure if exists MaestroQuitarGuia;
+DELIMITER //
+CREATE PROCEDURE MaestroQuitarGuia(IN idActividad INT)
+BEGIN
+	DELETE FROM Actividad WHERE id = idActividad;
+	DELETE FROM GrupoActividad WHERE GrupoActividad.idActividad = idActividad;
+	DELETE FROM Calificacion WHERE Calificacion.idActividad = idActividad;
+	DELETE FROM Guia WHERE Guia.idActividad = idActividad;
+
+
+END //
+DELIMITER ;
+#CALL MaestroQuitarGuia(9);
+#SELECT * FROM Alumno;
+#select * from Actividad;
+
+
+drop procedure if exists MaestroAgregarPregunta;
+DELIMITER //
+CREATE PROCEDURE MaestroAgregarPregunta(IN nameActivity VARCHAR(30), IN pregunta VARCHAR(128), IN resCorrecta VARCHAR(128), IN res VARCHAR(128))
+BEGIN
+	DECLARE idActivity INT;
+	DECLARE newIDCQuiz INT;
+
+    SET idActivity = (SELECT Actividad.id FROM Actividad WHERE Actividad.nombreActividad = nameActivity);
+	select idActivity;
+	INSERT INTO CQuiz (pregunta, respuestaCorrecta, respuesta) VALUES
+	(pregunta,resCorrecta, res);
+
+	SET newIDCQuiz = (SELECT CQuiz.id FROM CQuiz WHERE CQuiz.pregunta = pregunta and  CQuiz.respuestaCorrecta = resCorrecta and  CQuiz.respuesta = res );
+
+	INSERT INTO ActividadCQuiz (idCQuiz, idActividad) VALUES 
+	(newIDCQuiz,idActivity);
+
+
+END //
+DELIMITER ;
+#CALL MaestroAgregarPregunta("Actividad java","pregunta generica 1", "respuesta correcta 1", "respuesta no correcta 1");
+
+#SELECT * FROM ActividadCQuiz;
+
+
+drop procedure if exists MaestroVerCQuiz;
+DELIMITER //
+CREATE PROCEDURE MaestroVerCQuiz(IN nameActivity VARCHAR(30))
+BEGIN
+	DECLARE idActivity INT;
+    SET idActivity = (SELECT Actividad.id FROM Actividad WHERE Actividad.nombreActividad = nameActivity);
+	
+    SELECT DISTINCT CQuiz.pregunta, CQuiz.respuestaCorrecta, CQuiz.respuesta
+	FROM ((Actividad
+		INNER JOIN ActividadCQuiz ON Actividad.id = ActividadCQuiz.idActividad)
+        INNER JOIN CQuiz ON ActividadCQuiz.idCQuiz = CQuiz.id)
+	WHERE  Actividad.id = idActivity;
+
+
+END //
+DELIMITER ;
+#CALL MaestroVerCQuiz("Actividad java");
+
+
+
+
+
 
 
 
