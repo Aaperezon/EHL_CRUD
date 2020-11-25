@@ -554,7 +554,6 @@ BEGIN
 	DECLARE newIDCQuiz INT;
 
     SET idActivity = (SELECT Actividad.id FROM Actividad WHERE Actividad.nombreActividad = nameActivity);
-	select idActivity;
 	INSERT INTO CQuiz (pregunta, respuestaCorrecta, respuesta) VALUES
 	(pregunta,resCorrecta, res);
 
@@ -562,7 +561,6 @@ BEGIN
 
 	INSERT INTO ActividadCQuiz (idCQuiz, idActividad) VALUES 
 	(newIDCQuiz,idActivity);
-
 
 END //
 DELIMITER ;
@@ -578,16 +576,24 @@ BEGIN
 	DECLARE idActivity INT;
     SET idActivity = (SELECT Actividad.id FROM Actividad WHERE Actividad.nombreActividad = nameActivity);
 	
-    SELECT DISTINCT CQuiz.pregunta, CQuiz.respuestaCorrecta, CQuiz.respuesta
+
+    SELECT  CQuiz.pregunta as pregunta , CQuiz.respuesta
 	FROM ((Actividad
 		INNER JOIN ActividadCQuiz ON Actividad.id = ActividadCQuiz.idActividad)
         INNER JOIN CQuiz ON ActividadCQuiz.idCQuiz = CQuiz.id)
-	WHERE  Actividad.id = idActivity;
-
-
+	WHERE  Actividad.id = idActivity
+	UNION ALL
+	SELECT  CQuiz.pregunta,CQuiz.respuestaCorrecta
+	FROM ((Actividad
+		INNER JOIN ActividadCQuiz ON Actividad.id = ActividadCQuiz.idActividad)
+        INNER JOIN CQuiz ON ActividadCQuiz.idCQuiz = CQuiz.id)
+	WHERE  Actividad.id = idActivity 
+    ORDER BY pregunta;
+    
+    
 END //
 DELIMITER ;
-#CALL MaestroVerCQuiz("Actividad java");
+CALL MaestroVerCQuiz("Actividad java");
 
 
 
