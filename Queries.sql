@@ -173,6 +173,52 @@ DELIMITER ;
 
 
 
+/*Alumno : ActividadResolver
+	ver las preguntas de las actividades para responder
+*/
+drop procedure if exists AlumnoActividadResolver;
+DELIMITER //
+CREATE PROCEDURE AlumnoActividadResolver(IN nameActivity VARCHAR(30))
+BEGIN
+	SELECT  CQuiz.pregunta as pregunta , CQuiz.respuesta, CQuiz.id
+	FROM ((Actividad
+		INNER JOIN CQuiz)
+        INNER JOIN ActividadCQuiz ON Actividad.id = ActividadCQuiz.idActividad and CQuiz.id = ActividadCQuiz.idCQuiz)
+	WHERE  Actividad.nombreActividad = nameActivity
+    UNION ALL
+    SELECT  CQuiz.pregunta,CQuiz.respuestaCorrecta, CQuiz.id
+    FROM ((Actividad
+		INNER JOIN CQuiz)
+        INNER JOIN ActividadCQuiz ON Actividad.id = ActividadCQuiz.idActividad and CQuiz.id = ActividadCQuiz.idCQuiz)
+	WHERE  Actividad.nombreActividad = nameActivity
+	ORDER BY pregunta;
+
+END //
+DELIMITER ;
+#    CALL AlumnoActividadResolver('g');
+#SELECT * from Alumno
+
+
+
+drop trigger if exists AutoCalificacion;
+DELIMITER //
+CREATE TRIGGER AutoCalificacion AFTER INSERT ON GrupoActividad FOR EACH ROW INSERT INTO Calificacion (idActividad,idAlumno,calificacion) VALUES
+(NEW.idActividad,SELECT Alumno.id FROM (((((Actividad
+	INNER JOIN Grupo)
+    INNER JOIN GrupoActividad ON Actividad.id = GrupoActividad.idActividad and GrupoActividad.idGrupo = Grupo.id)
+    INNER JOIN Alumno)
+    INNER JOIN GrupoAlumno ON Grupo.id = GrupoAlumno.idGrupo and Alumno.id = GrupoAlumno.idAlumno)
+)
+WHERE Actividad.id = NEW.idActividad;, 0);
+
+
+
+DELIMITER ;
+#CALL FotoAvatar( 1 );
+
+
+
+SELECT * FROM Calificacion;
 
 
 
@@ -387,7 +433,7 @@ drop procedure if exists MaestroTrabajosCQuiz;
 DELIMITER //
 CREATE PROCEDURE MaestroTrabajosCQuiz(IN usr INT)
 BEGIN
-   SELECT DISTINCT Actividad.nombreActividad, Grupo.nombreGrupo
+   SELECT DISTINCT Actividad.nombreActividad, Grupo.nombreGrupo, Actividad.id
 	FROM (((((Maestro
 		INNER JOIN Grupo)
         INNER JOIN GrupoMaestro ON Grupo.id = GrupoMaestro.idGrupo and Maestro.id = GrupoMaestro.idMaestro)
@@ -529,21 +575,27 @@ DELIMITER ;
 
 
 
-drop procedure if exists MaestroQuitarGuia;
+drop procedure if exists MaestroQuitarActividad;
 DELIMITER //
-CREATE PROCEDURE MaestroQuitarGuia(IN idActividad INT)
+CREATE PROCEDURE MaestroQuitarActividad(IN idActividad INT)
 BEGIN
 	DELETE FROM Actividad WHERE id = idActividad;
 	DELETE FROM GrupoActividad WHERE GrupoActividad.idActividad = idActividad;
 	DELETE FROM Calificacion WHERE Calificacion.idActividad = idActividad;
 	DELETE FROM Guia WHERE Guia.idActividad = idActividad;
-
+	DELETE CQuiz, ActividadCQuiz, Actividad FROM ((CQuiz
+			INNER JOIN Actividad)
+			INNER JOIN ActividadCQuiz ON CQuiz.id = ActividadCQuiz.idCQuiz and Actividad.id = ActividadCQuiz.idActividad
+	) WHERE Actividad.id = idActividad;
 
 END //
 DELIMITER ;
-#CALL MaestroQuitarGuia(9);
+#CALL MaestroQuitarActividad(9);
 #SELECT * FROM Alumno;
 #select * from Actividad;
+
+
+
 
 
 drop procedure if exists MaestroAgregarPregunta;
@@ -593,12 +645,7 @@ BEGIN
     
 END //
 DELIMITER ;
-CALL MaestroVerCQuiz("Actividad java");
-
-
-
-
-
+#CALL MaestroVerCQuiz("Actividad java");
 
 
 

@@ -14,6 +14,7 @@ router.get('/controlParentalNivelConocimiento/:id', ehlController.controlParenta
 router.get('/alumnoActividades/:id', ehlController.alumnoActividades)
 router.get('/alumnoGrupos/:id', ehlController.alumnoGrupos)
 router.get('/alumnoAjustes/:id/:confirm', ehlController.alumnoAjustes)
+router.get('/alumnoActividadResolver/:nameActivity', ehlController.alumnoActividadResolver)
 
 
 router.get('/maestroAlumnos/:id', ehlController.maestroAlumnos)
@@ -30,8 +31,7 @@ router.get('/maestroAgregarCQuizConGrupo/:id/:nGrupo/:nActivity', ehlController.
 router.get('/maestroAgregarCQuizSinGrupo/:nGrupo/:nActivity', ehlController.maestroAgregarCQuizSinGrupo)
 router.get('/maestroAgregarGuiaConGrupo/:id/:nGrupo/:nActivity/:nURL', ehlController.maestroAgregarGuiaConGrupo)
 router.get('/maestroAgregarGuiaSinGrupo/:nGrupo/:nActivity/:nURL', ehlController.maestroAgregarGuiaSinGrupo)
-router.delete('/maestroQuitarGuia/:idActividad', ehlController.maestroQuitarGuia)
-
+router.delete('/maestroQuitarActividad/:idActividad', ehlController.maestroQuitarActividads)
 router.get('/maestroVerCQuiz/:nameActivity', ehlController.maestroVerCQuiz)
 router.get('/maestroAgregarPregunta/:nameActivity/:nPregunta/:nRessCorrecta/:nRes', ehlController.maestroAgregarPregunta)
 

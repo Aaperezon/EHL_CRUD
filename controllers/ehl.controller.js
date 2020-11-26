@@ -95,6 +95,18 @@ module.exports.alumnoAjustes = (request,response) => {
         response.json(results)
     })
 } 
+module.exports.alumnoActividadResolver = (request,response) => {
+    let sql = 'Call AlumnoActividadResolver(?)'
+    conexion.query(sql, [request.params.nameActivity.replace(/\+/g," ")], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+} 
+
+
+
 
 
 
@@ -240,8 +252,8 @@ module.exports.maestroAgregarGuiaSinGrupo = (request,response) => {
 }
 
 
-module.exports.maestroQuitarGuia = (request,response) => {
-    let sql = 'Call MaestroQuitarGuia(?)'
+module.exports.maestroQuitarActividads = (request,response) => {
+    let sql = 'Call MaestroQuitarActividad(?)'
     conexion.query(sql, [request.params.idActividad], (error, results, fields) =>{
         if(error){
             response.send(error)
@@ -249,6 +261,8 @@ module.exports.maestroQuitarGuia = (request,response) => {
         response.json(results[0])
     })
 }
+
+
 module.exports.maestroVerCQuiz = (request,response) => {
     let sql = 'Call MaestroVerCQuiz(?)'
     conexion.query(sql, [request.params.nameActivity.replace(/\+/g," ")], (error, results, fields) =>{
