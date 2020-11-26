@@ -199,27 +199,37 @@ DELIMITER ;
 #SELECT * from Alumno
 
 
-
+/*
 drop trigger if exists AutoCalificacion;
 DELIMITER //
 CREATE TRIGGER AutoCalificacion AFTER INSERT ON GrupoActividad FOR EACH ROW INSERT INTO Calificacion (idActividad,idAlumno,calificacion) VALUES
-(NEW.idActividad,SELECT Alumno.id FROM (((((Actividad
+(NEW.idActividad,(SELECT Alumno.id FROM (((((Actividad
 	INNER JOIN Grupo)
     INNER JOIN GrupoActividad ON Actividad.id = GrupoActividad.idActividad and GrupoActividad.idGrupo = Grupo.id)
     INNER JOIN Alumno)
     INNER JOIN GrupoAlumno ON Grupo.id = GrupoAlumno.idGrupo and Alumno.id = GrupoAlumno.idAlumno)
 )
-WHERE Actividad.id = NEW.idActividad;, 0);
-
-
-
+WHERE Actividad.id = NEW.idActividad), 0);
 DELIMITER ;
-#CALL FotoAvatar( 1 );
+*/
 
 
-
-SELECT * FROM Calificacion;
-
+drop trigger if exists AutoCalificacion;
+DELIMITER //
+CREATE TRIGGER AutoCalificacion
+AFTER INSERT
+   ON GrupoActividad FOR EACH ROW
+BEGIN
+	INSERT INTO Calificacion (idActividad,idAlumno,calificacion)
+	SELECT NEW.idActividad, Alumno.id, 0 FROM (((((Actividad
+	INNER JOIN Grupo)
+    INNER JOIN GrupoActividad ON Actividad.id = GrupoActividad.idActividad and GrupoActividad.idGrupo = Grupo.id)
+    INNER JOIN Alumno)
+    INNER JOIN GrupoAlumno ON Grupo.id = GrupoAlumno.idGrupo and Alumno.id = GrupoAlumno.idAlumno)
+	)
+	WHERE Actividad.id = NEW.idActividad;
+END; //
+DELIMITER ;
 
 
 
