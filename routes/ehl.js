@@ -11,7 +11,8 @@ router.get('/controlParentalAsistencias/:id', ehlController.controlParentalAsist
 router.get('/controlParentalNivelConocimiento/:id', ehlController.controlParentalNivelConocimiento)
 
 
-router.get('/alumnoActividades/:id', ehlController.alumnoActividades)
+router.get('/alumnoActividadesCQuiz/:id', ehlController.alumnoActividadesCQuiz)
+router.get('/alumnoActividadesGuias/:id', ehlController.alumnoActividadesGuias)
 router.get('/alumnoGrupos/:id', ehlController.alumnoGrupos)
 router.get('/alumnoAjustes/:id/:confirm', ehlController.alumnoAjustes)
 router.get('/alumnoActividadResolver/:nameActivity', ehlController.alumnoActividadResolver)

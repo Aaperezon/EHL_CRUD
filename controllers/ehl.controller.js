@@ -66,8 +66,17 @@ module.exports.controlParentalNivelConocimiento = (request,response) => {
 } 
 
 
-module.exports.alumnoActividades = (request,response) => {
-    let sql = 'Call AlumnoActividades(?)'
+module.exports.alumnoActividadesCQuiz = (request,response) => {
+    let sql = 'Call AlumnoActividadesCQuiz(?)'
+    conexion.query(sql, [request.params.id], (error, results, fields) =>{
+        if(error){
+            response.send(error)
+        }
+        response.json(results[0])
+    })
+} 
+module.exports.alumnoActividadesGuias = (request,response) => {
+    let sql = 'Call AlumnoActividadesGuias(?)'
     conexion.query(sql, [request.params.id], (error, results, fields) =>{
         if(error){
             response.send(error)
@@ -233,7 +242,7 @@ module.exports.maestroAgregarCQuizSinGrupo = (request,response) => {
 
 module.exports.maestroAgregarGuiaConGrupo = (request,response) => {
     let sql = 'Call MaestroAgregarGuiaConGrupo(?,?,?,?)'
-    conexion.query(sql, [request.params.id,request.params.nGrupo.replace(/\+/g," "), request.params.nActivity.replace(/\+/g," "), request.params.nURL], (error, results, fields) =>{
+    conexion.query(sql, [request.params.id,request.params.nGrupo.replace(/\+/g," "), request.params.nActivity.replace(/\+/g," "), request.params.nURL.replace(/\+/g," ")], (error, results, fields) =>{
         if(error){
             response.send(error)
         }
@@ -243,7 +252,7 @@ module.exports.maestroAgregarGuiaConGrupo = (request,response) => {
 
 module.exports.maestroAgregarGuiaSinGrupo = (request,response) => {
     let sql = 'Call MaestroAgregarGuiaSinGrupo(?,?,?)'
-    conexion.query(sql, [request.params.nGrupo.replace(/\+/g," "), request.params.nActivity.replace(/\+/g," "), request.params.nURL], (error, results, fields) =>{
+    conexion.query(sql, [request.params.nGrupo.replace(/\+/g," "), request.params.nActivity.replace(/\+/g," "), request.params.nURL.replace(/\+/g," ")], (error, results, fields) =>{
         if(error){
             response.send(error)
         }

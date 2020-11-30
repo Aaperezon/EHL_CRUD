@@ -115,23 +115,43 @@ DELIMITER ;
 	nombre de todos los grupos, actividades de cada grupo, calificacion de cada actividad.
 */
 
-drop procedure if exists AlumnoActividades;
+drop procedure if exists AlumnoActividadesCQuiz;
 DELIMITER //
-CREATE PROCEDURE AlumnoActividades(IN usr INT)
+CREATE PROCEDURE AlumnoActividadesCQuiz(IN usr INT)
 BEGIN
-	SELECT Alumno.nombreCompleto, Actividad.nombreActividad, Calificacion.calificacion
-	FROM (((((Alumno
+	SELECT Alumno.nombreCompleto, Actividad.nombreActividad, Calificacion.calificacion, "CQuiz" as tipo
+	FROM ((((((Alumno
         INNER JOIN GrupoAlumno ON Alumno.id = GrupoAlumno.idAlumno)
         INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
         INNER JOIN GrupoActividad ON Grupo.id = GrupoActividad.idGrupo)
         INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.id)
-        INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.id = Calificacion.idActividad)        
+        INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.id = Calificacion.idActividad)      
+        INNER JOIN ActividadCQuiz ON Actividad.id = ActividadCQuiz.idActividad)    
+        
 	WHERE  Alumno.id = usr;
     
 END //
 DELIMITER ;
-#CALL AlumnoActividades( 5 );
-
+#CALL AlumnoActividadesCQuiz( 1 );
+	
+drop procedure if exists AlumnoActividadesGuias;
+DELIMITER //
+CREATE PROCEDURE AlumnoActividadesGuias(IN usr INT)
+BEGIN
+	SELECT Alumno.nombreCompleto, Actividad.nombreActividad, Calificacion.calificacion,	Guia.url as tipo
+	FROM ((((((Alumno
+        INNER JOIN GrupoAlumno ON Alumno.id = GrupoAlumno.idAlumno)
+        INNER JOIN Grupo ON GrupoAlumno.idGrupo = Grupo.id)
+        INNER JOIN GrupoActividad ON Grupo.id = GrupoActividad.idGrupo)
+        INNER JOIN Actividad ON GrupoActividad.idActividad = Actividad.id)
+        INNER JOIN Calificacion ON GrupoAlumno.idAlumno = Calificacion.idAlumno and Actividad.id = Calificacion.idActividad)      
+        INNER JOIN Guia ON Actividad.id = Guia.idActividad)    
+        
+	WHERE  Alumno.id = usr;
+    
+END //
+DELIMITER ;
+#CALL AlumnoActividadesGuias( 1 );
 	
     
 /*Alumno : Grupos
@@ -199,21 +219,6 @@ DELIMITER ;
 #SELECT * from Alumno
 
 
-/*
-drop trigger if exists AutoCalificacion;
-DELIMITER //
-CREATE TRIGGER AutoCalificacion AFTER INSERT ON GrupoActividad FOR EACH ROW INSERT INTO Calificacion (idActividad,idAlumno,calificacion) VALUES
-(NEW.idActividad,(SELECT Alumno.id FROM (((((Actividad
-	INNER JOIN Grupo)
-    INNER JOIN GrupoActividad ON Actividad.id = GrupoActividad.idActividad and GrupoActividad.idGrupo = Grupo.id)
-    INNER JOIN Alumno)
-    INNER JOIN GrupoAlumno ON Grupo.id = GrupoAlumno.idGrupo and Alumno.id = GrupoAlumno.idAlumno)
-)
-WHERE Actividad.id = NEW.idActividad), 0);
-DELIMITER ;
-*/
-
-
 drop trigger if exists AutoCalificacion;
 DELIMITER //
 CREATE TRIGGER AutoCalificacion
@@ -232,6 +237,33 @@ END; //
 DELIMITER ;
 
 
+
+/*Alumno : Grupos
+	nombre del grupo, nombre del maestro que da ese grupo.
+*/
+drop procedure if exists CalificarActividad;
+DELIMITER //
+CREATE PROCEDURE CalificarActividad(IN usr VARCHAR(255))
+BEGIN
+	DECLARE divisor INT;
+    
+    SELECT find_in_set('35,37','35,36,37') as result;
+
+    SET divisor = (
+		SELECT count(*) FROM CQuiz WHERE 
+		CQuiz.id IN ('35','36','37')
+    );
+    
+    SELECT divisor;
+	SELECT SUBSTRING_INDEX('buena, buena, buena', ',', 2);
+
+    SELECT count(*) FROM CQuiz WHERE 
+	CQuiz.id IN ('35','36','37') and
+    CQuiz.respuestaCorrecta IN ( 'buena, buena, buena' );
+
+END //
+DELIMITER ;
+CALL CalificarActividad( '35,36,37' );
 
 
 
